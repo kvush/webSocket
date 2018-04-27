@@ -51,4 +51,12 @@ class Client extends ActiveRecord
         Client::deleteAll();
     }
 
+    /**
+     * @param $connId
+     */
+    public static function clearOneData($connId)
+    {
+        Client::deleteAll(['connId' => $connId]);
+    }
+
 }

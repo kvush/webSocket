@@ -1,7 +1,7 @@
-const host = "sku-grid";
+const host = window.location.hostname;
 const port = "8000";
 
-function webSocketStart(client_id, task_id, status_p) {
+function webSocketStart(button, client_id, task_id, status_p) {
     if ("WebSocket" in window) {
 
         var ws = new WebSocket("ws://" + host + ":" + port);
@@ -14,6 +14,10 @@ function webSocketStart(client_id, task_id, status_p) {
             ws.send(data);
             status_p.innerHTML = "online";
             status_p.style.color = "#66cc00";
+            button.innerHTML = "Отключиться от WebSocket";
+            button.onclick = function () {
+                ws.close();
+            };
             console.log("Message is sent...");
         };
 
@@ -27,10 +31,15 @@ function webSocketStart(client_id, task_id, status_p) {
             console.log(e);
             status_p.innerHTML = "offline";
             status_p.style.color = "#ffffff";
+            button.onclick = function() {
+                webSocketStart(button, client_id, task_id, status_p);
+            };
+            button.innerHTML = "Запустить WebSocket";
             console.log("Connection is closed...");
         };
 
         ws.onerror = function (e) {
+            alert("Ошибка. Возможно удаленный сервер не включен");
             console.log('error');
             console.log(e);
         };
