@@ -1,4 +1,5 @@
 <?php
+$port = "8000";
 
 return [
     'basePath' => dirname(__DIR__),
@@ -20,8 +21,8 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'sqlite:@app/database.sqlite',
         ],
-        'ws' => function() {
-            return new app\ext\WebSocketServer("8000");
+        'ws' => function() use ($port) {
+            return new app\ext\WebSocketServer($port);
         },
     ],
 ];
