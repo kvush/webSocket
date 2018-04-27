@@ -17,10 +17,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $clients = Client::find()->asArray()->all();
-
-        return $this->render('index', [
-            'clients' => $clients
-        ]);
+        return $this->render('index');
     }
 }

@@ -35,6 +35,13 @@ body {
     text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
 
+/*отменяем стили cover.css для модали*/
+body .modal {
+    color: #000; !important;
+    text-align: start; !important;
+    text-shadow: none; !important;
+}
+
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
     display: table;

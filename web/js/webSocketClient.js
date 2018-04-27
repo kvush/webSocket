@@ -23,6 +23,10 @@ function webSocketStart(button, client_id, task_id, status_p) {
 
         ws.onmessage = function (evt) {
             var received_msg = evt.data;
+            var inMessageCnt = document.getElementById('incomingMessageContainer');
+            inMessageCnt.innerHTML = received_msg;
+            $('#myModal').modal('show');
+
             console.log("Incoming message:\n");
             console.log(received_msg);
         };

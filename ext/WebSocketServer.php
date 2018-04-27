@@ -86,7 +86,8 @@ class WebSocketServer extends Worker
             $dataArr = json_decode($data, true);
             if (Client::initNewConnection($connection->id, $dataArr['clientId'], $dataArr['taskId'])){
                 /** @var TcpConnection $connection */
-                $connection->send('Your data '. $data .' was saved');
+//                $connection->send('Your data '. $data .' was saved');
+                //ничего не надо отправлять, зачем зря модальное окно дергать
             }
             else {
                 /** @var TcpConnection $connection */

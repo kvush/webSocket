@@ -31,7 +31,3 @@
     </div>
 
 </div>
-
-<div class="well">
-    <?php \yii\helpers\VarDumper::dump($clients, 10, true)?>
-</div>

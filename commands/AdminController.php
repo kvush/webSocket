@@ -19,6 +19,8 @@ class AdminController extends Controller
     /** @var  string */
     public $userId;
     /** @var  string */
+    public $taskId;
+    /** @var  string */
     public $message;
 
     /**
@@ -28,7 +30,7 @@ class AdminController extends Controller
      */
     public function options($actionID)
     {
-        return ['userId', 'message'];
+        return ['userId', 'message', 'taskId'];
     }
 
     /**
@@ -36,7 +38,7 @@ class AdminController extends Controller
      */
     public function optionAliases()
     {
-        return ['u' => 'userId', 'm' => 'message'];
+        return ['u' => 'userId', 'm' => 'message', 't' => 'taskId'];
     }
 
     /**
@@ -106,20 +108,29 @@ class AdminController extends Controller
             return ExitCode::OK;
         }
 
-        if ($this->userId == 'all') {
-            $connId = Client::find()->select('connId')->asArray()->all();
+        //подготовим запрос в зависимости от переданых ключей
+        $query = Client::find()->select('connId');
+        //особый случай когда -u all и одновременно присутсвует ключ -t
+        if ($this->userId == 'all' && !empty($this->taskId)) {
+            echo "ключ -t проингнорирован";
         }
-        else {
-            $connId = Client::find()->select('connId')
-                ->where(['clientId' => $this->userId])->asArray()->all();
+        if ($this->userId != 'all') {
+            $query->andWhere(['clientId' => $this->userId]);
         }
-
+        if (!empty($this->taskId)) {
+            $query->andWhere(['taskId' => $this->taskId]);
+        }
+        $connId = $query->asArray()->all();
         $connId = ArrayHelper::getColumn($connId, 'connId');
 
         if (empty($connId)) {
-            echo "Пользователий с clientId: " . $this->userId . ", не найдено";
+            $task = empty($this->taskId) ? ',' : " и задачей taskId: $this->taskId,";
+            echo "Пользователий с clientId: " . $this->userId . "$task не найдено";
             return ExitCode::OK;
         }
+
+        //дебаг
+//        print_r($connId);
 
         /** @var WebSocketServer $ws */
         $ws = \Yii::$app->get('ws');
